@@ -16,7 +16,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')  # Use .env valu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'  # Convert to boolean
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+# Set ALLOWED_HOSTS to include the Render domain
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'bometnewswire.onrender.com').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -87,15 +88,26 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Specify your static files directory
+
+# Use STATICFILES_DIRS to point to your static folder if you're serving static files directly from there
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Render will serve static files for production, so we use STATIC_ROOT for collected files
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory where 'collectstatic' will store files
+
+# Use ManifestStaticFilesStorage for versioning the static files (caching control)
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-
+# Media files (User uploads, etc.)
 MEDIA_URL = '/media/'  # Base URL for serving media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory to store media files
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+# Set the CSRF trusted origins to include the domain
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'https://bometnewswire.onrender.com',  # Add your Render domain
+]
+
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Default primary key field type
