@@ -254,3 +254,12 @@ a.text-dark {
 a.text-dark:hover {
     color: #0056b3; /* Primary color */
 }
+/* News Tabs and Lists */
+.card-header-tabs .nav-link {
+    font-weight: bold; /* Makes the "Trending" and "Latest" tabs bold */
+}
+
+.small-text-list .list-group-item {
+    font-size: 0.9rem; /* Reduces font size for list items */
+    line-height: 1.4;  /* Improves spacing for smaller text */
+}

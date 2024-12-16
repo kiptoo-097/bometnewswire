@@ -11,14 +11,33 @@
             <!-- Live Radio -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body text-center">
-                    <h5 class="card-title font-weight-bold">Live Radio</h5>
-                    <audio id="radioPlayer" controls style="width: 100%; border-radius: 5px;">
-                        <source src="https://stream.zeno.fm/ufm2ncifwssuv" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
+                    <h5 class="card-title font-weight-bold d-flex align-items-center justify-content-center">
+                        <i class="fas fa-broadcast-tower text-danger mr-2"></i> Live Radio
+                    </h5>
+                    <div class="audio-player">
+                        <audio id="radioPlayer" style="width: 100%; border-radius: 5px;">
+                            <source src="https://stream.zeno.fm/ufm2ncifwssuv" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="audio-controls mt-2 d-flex justify-content-center align-items-center">
+                            <button id="playPauseBtn" class="btn btn-danger btn-sm mr-2">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <i class="volume-icon fas fa-volume-up mx-2"></i>
+                            <input
+                                id="volumeBar"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value="0.5"
+                                class="volume-bar"
+                                style="display: none; width: 80px;" />
+                        </div>
+                    </div>
                 </div>
             </div>
-
+    
             <!-- Top News -->
             <h4 class="mb-3 font-weight-bold">Top News</h4>
             {% for news in latest_news|slice:":1" %}
@@ -36,7 +55,7 @@
             </div>
             {% endfor %}
         </aside>
-
+    
         <!-- Main News -->
         <main class="col-md-6">
             {% if main_news %}
@@ -55,24 +74,24 @@
             </div>
             {% endif %}
         </main>
-
+    
         <!-- Trending and Latest News -->
         <aside class="col-md-3">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white">
                     <ul class="nav nav-tabs card-header-tabs" id="newsTabs">
                         <li class="nav-item">
-                            <a class="nav-link active text-dark" id="trending-tab" data-toggle="tab" href="#trending" role="tab">Trending</a>
+                            <a class="nav-link active text-dark font-weight-bold" id="trending-tab" data-toggle="tab" href="#trending" role="tab">Trending</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" id="latest-tab" data-toggle="tab" href="#latest" role="tab">Latest</a>
+                            <a class="nav-link text-dark font-weight-bold" id="latest-tab" data-toggle="tab" href="#latest" role="tab">Latest</a>
                         </li>
                     </ul>
                 </div>
                 <div class="tab-content p-3">
                     <!-- Trending -->
                     <div class="tab-pane fade show active" id="trending" role="tabpanel">
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush small-text-list">
                             {% for news in trending_news %}
                             <li class="list-group-item">
                                 <a href="{% url 'news_detail' news.pk %}" class="text-primary">{{ news.title }}</a>
@@ -82,7 +101,7 @@
                     </div>
                     <!-- Latest -->
                     <div class="tab-pane fade" id="latest" role="tabpanel">
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush small-text-list">
                             {% for news in latest_news %}
                             <li class="list-group-item">
                                 <a href="{% url 'news_detail' news.pk %}" class="text-primary">{{ news.title }}</a>
@@ -92,6 +111,7 @@
                     </div>
                 </div>
             </div>
+            
         </aside>
     </div>
 
@@ -144,31 +164,6 @@
     
     <!-- Include pdf.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Loop through all the canvas elements that have the class 'pdf-preview'
-            document.querySelectorAll('.pdf-preview').forEach(function(canvas) {
-                var url = canvas.getAttribute('data-pdf-url');  // Get PDF URL from data attribute
-                var context = canvas.getContext('2d');
-                var scale = 0.5;  // Scale of the preview image
-    
-                // Load and render the PDF document on the canvas
-                pdfjsLib.getDocument(url).promise.then(function(pdf) {
-                    pdf.getPage(1).then(function(page) {
-                        var viewport = page.getViewport({ scale: scale });
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-    
-                        page.render({
-                            canvasContext: context,
-                            viewport: viewport
-                        });
-                    });
-                });
-            });
-        });
-    </script>
-    
+
 </div>
 {% endblock %}
