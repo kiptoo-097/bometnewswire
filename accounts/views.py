@@ -24,9 +24,15 @@ def news_detail(request, pk):
     article = get_object_or_404(NewsArticle, pk=pk)
     return render(request, 'accounts/news_detail.html', {'article': article})
 
+
 def category_view(request, category):
-    articles = NewsArticle.objects.filter(category=category)
-    return render(request, 'accounts/category.html', {'category': category, 'articles': articles})
+    articles = NewsArticle.objects.filter(category=category).order_by('-date_published')
+    paginator = Paginator(articles, 6)  # 6 articles per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'accounts/category.html', {'category': category, 'page_obj': page_obj})
+
 
 def article_detail_view(request, pk):
     article = get_object_or_404(NewsArticle, pk=pk)
