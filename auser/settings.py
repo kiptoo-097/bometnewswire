@@ -89,6 +89,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]  # Specify your static files directory
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory where 'collectstatic' will store files
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 
 MEDIA_URL = '/media/'  # Base URL for serving media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory to store media files
