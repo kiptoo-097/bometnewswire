@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -68,6 +70,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',  # This can be changed if you're using another DB
     }
 }
+
+DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
