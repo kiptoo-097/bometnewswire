@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Bomet NewsWire{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-3">
+    <!-- Main Content -->
+    <div class="row">
+        <!-- Sidebar: Live Radio and Top News -->
+        <aside class="col-md-3">
+            <!-- Live Radio -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title font-weight-bold">Live Radio</h5>
+                    <audio id="radioPlayer" controls style="width: 100%; border-radius: 5px;">
+                        <source src="https://stream.zeno.fm/ufm2ncifwssuv" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+
+            <!-- Top News -->
+            <h4 class="mb-3 font-weight-bold">Top News</h4>
+            {% for news in latest_news|slice:":1" %}
+            <div class="card border-0 shadow-sm mb-4">
+                <a href="{% url 'news_detail' news.pk %}">
+                    <img src="{{ news.image.url }}" class="card-img-top rounded" alt="{{ news.title }}">
+                    <span class="badge badge-primary position-absolute m-2 p-2">{{ news.category }}</span>
+                </a>
+                <div class="card-body">
+                    <h6 class="card-title font-weight-bold">
+                        <a href="{% url 'news_detail' news.pk %}" class="text-dark">{{ news.title }}</a>
+                    </h6>
+                    <p class="text-muted small">By {{ news.published_by.name }} on {{ news.date_published }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </aside>
+
+        <!-- Main News -->
+        <main class="col-md-6">
+            {% if main_news %}
+            <div class="card border-0 shadow-lg mb-4">
+                <a href="{% url 'news_detail' main_news.pk %}">
+                    <img src="{{ main_news.image.url }}" class="card-img-top rounded" alt="{{ main_news.title }}">
+                    <span class="badge badge-danger position-absolute m-2 p-2">{{ main_news.category }}</span>
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title font-weight-bold">
+                        <a href="{% url 'news_detail' main_news.pk %}" class="text-dark">{{ main_news.title }}</a>
+                    </h4>
+                    <p class="text-muted small">By {{ main_news.published_by.name }} on {{ main_news.date_published }}</p>
+                    <p>{{ main_news.content|truncatechars:200 }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </main>
+
+        <!-- Trending and Latest News -->
+        <aside class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <ul class="nav nav-tabs card-header-tabs" id="newsTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active text-dark" id="trending-tab" data-toggle="tab" href="#trending" role="tab">Trending</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" id="latest-tab" data-toggle="tab" href="#latest" role="tab">Latest</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content p-3">
+                    <!-- Trending -->
+                    <div class="tab-pane fade show active" id="trending" role="tabpanel">
+                        <ul class="list-group list-group-flush">
+                            {% for news in trending_news %}
+                            <li class="list-group-item">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-primary">{{ news.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- Latest -->
+                    <div class="tab-pane fade" id="latest" role="tabpanel">
+                        <ul class="list-group list-group-flush">
+                            {% for news in latest_news %}
+                            <li class="list-group-item">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-primary">{{ news.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Additional News Section -->
+    <section class="mt-5">
+        <h3 class="text-center font-weight-bold mb-4">More News</h3>
+        <div class="row">
+            {% for news in additional_news %}
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <a href="{% url 'news_detail' news.pk %}">
+                        <img src="{{ news.image.url }}" class="card-img-top rounded" alt="{{ news.title }}">
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title font-weight-bold">
+                            <a href="{% url 'news_detail' news.pk %}" class="text-dark">{{ news.title }}</a>
+                        </h6>
+                        <p class="text-muted small">By {{ news.published_by.name }} on {{ news.date_published }}</p>
+                        <p class="card-text">{{ news.content|truncatechars:100 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'all_news' %}" class="btn btn-primary btn-lg">See All News</a>
+        </div>
+    </section>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4 font-weight-bold">Latest E-paper</h1>
+        <div class="row">
+            {% for epaper in latest_epapers %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-bold">{{ epaper.title }}</h5>
+                        <p class="card-text">Uploaded on: {{ epaper.date_uploaded }}</p>
+                        <!-- Redirect to all epaper list when preview clicked -->
+                        <a href="{% url 'epaper_list' %}" class="stretched-link">
+                            <div id="pdf-preview-container-{{ epaper.pk }}" style="width:100%; height:200px; overflow: hidden;">
+                                <canvas class="pdf-preview" data-pdf-url="{{ epaper.pdf.url }}"></canvas>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Include pdf.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Loop through all the canvas elements that have the class 'pdf-preview'
+            document.querySelectorAll('.pdf-preview').forEach(function(canvas) {
+                var url = canvas.getAttribute('data-pdf-url');  // Get PDF URL from data attribute
+                var context = canvas.getContext('2d');
+                var scale = 0.5;  // Scale of the preview image
+    
+                // Load and render the PDF document on the canvas
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                    pdf.getPage(1).then(function(page) {
+                        var viewport = page.getViewport({ scale: scale });
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+    
+                        page.render({
+                            canvasContext: context,
+                            viewport: viewport
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+    
+</div>
+{% endblock %}

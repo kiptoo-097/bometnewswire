@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{{ article.title }}</h1>
+    <img src="{{ article.image.url }}" class="img-fluid mb-3" alt="{{ article.title }}">
+    {% if article.caption %}
+    <p class="text-muted"><small>{{ article.caption }}</small></p>
+    {% endif %}
+    <div class="d-flex align-items-center mb-3">
+        <!-- Avatar -->
+        <img src="{{ article.published_by.avatar.url }}" alt="Avatar" class="rounded-circle mr-3" width="50" height="50">
+        <div>
+            <p class="mb-0">By <strong>{{ article.published_by.name }}</strong></p>
+            <p class="mb-0 text-muted"><small>Published on {{ article.date_published|date:"F j, Y" }}</small></p>
+        </div>
+        <div class="ml-auto">
+            {% if article.published_by.facebook %}
+            <a href="{{ article.published_by.facebook }}" class="text-dark"><i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+            {% if article.published_by.twitter %}
+            <a href="{{ article.published_by.twitter }}" class="text-dark ml-3"><i class="fab fa-twitter"></i></a>
+            {% endif %}
+            {% if article.published_by.linkedin %}
+            <a href="{{ article.published_by.linkedin }}" class="text-dark ml-3"><i class="fab fa-linkedin-in"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    <div>{{ article.content|linebreaksbr }}</div>
+</div>
+{% endblock %}
