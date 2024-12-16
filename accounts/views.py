@@ -3,22 +3,20 @@ from .models import NewsArticle, Epaper
 
 def home_view(request):
     latest_trending_news = NewsArticle.objects.filter(trending=True).order_by('-date_published').first()
-    latest_news = NewsArticle.objects.exclude(pk=latest_trending_news.pk).order_by('-date_published')[:5] if latest_trending_news else NewsArticle.objects.order_by('-date_published')[:5]
-    trending_news = NewsArticle.objects.filter(trending=True).order_by('-date_published')[1:5] if latest_trending_news else NewsArticle.objects.filter(trending=True).order_by('-date_published')[:4]
-    additional_news = NewsArticle.objects.exclude(pk=latest_trending_news.pk).order_by('-date_published')[1:10] if latest_trending_news else NewsArticle.objects.order_by('-date_published')[1:10]
+    latest_news = NewsArticle.objects.exclude(pk=latest_trending_news.pk).order_by('-date_published')[:5] if latest_trending_news else []
+    trending_news = NewsArticle.objects.filter(trending=True).order_by('-date_published')[1:5] if latest_trending_news else []
+    additional_news = NewsArticle.objects.exclude(pk=latest_trending_news.pk).order_by('-date_published')[1:10] if latest_trending_news else []
+
+    latest_epaper = Epaper.objects.latest('date_uploaded') if Epaper.objects.exists() else None
+    latest_epapers = Epaper.objects.all().order_by('-date_uploaded')[:3] if Epaper.objects.exists() else []
     
-    latest_epaper = Epaper.objects.latest('date_uploaded')
-    latest_epapers = Epaper.objects.all().order_by('-date_uploaded')[:3]  # Top 3 latest epapers
-    context = {
-        'latest_epapers': latest_epapers,
-    }
     context = {
         'main_news': latest_trending_news,
         'latest_news': latest_news,
         'trending_news': trending_news,
         'additional_news': additional_news,
         'latest_epaper': latest_epaper,
-        'latest_epapers': latest_epapers,  # Add latest e-papers to the context
+        'latest_epapers': latest_epapers,
     }
     return render(request, 'accounts/home.html', context)
 
