@@ -5,18 +5,32 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Bomet Newswire</title>
+        
         <!-- Favicon -->
         <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+        
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:title" content="Bomet Newswire">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.bometnewswire.co.ke">
+        <meta property="og:image" content="{% static 'images/og_image.png' %}">
+        <meta property="og:description" content="Stay updated with the latest news from Bomet.">
+        
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        
         <!-- Static CSS file -->
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        
+        <!-- PDF.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+        
+        <!-- Custom Scripts -->
         <script src="{% static 'js/epaper.js' %}"></script>
         <script src="{% static 'scripts.js' %}"></script>
-        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     </head>
+    
     
 <body class="flex-column min-vh-100">
 
