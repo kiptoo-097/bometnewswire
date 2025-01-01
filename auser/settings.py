@@ -3,7 +3,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -16,8 +15,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')  # Use .env valu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'  # Convert to boolean
 
-# Set ALLOWED_HOSTS to include the Render domain
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'bometnewswire.onrender.com').split(',')
+# Set ALLOWED_HOSTS to include all your domains
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'bometnewswire.co.ke,bometnewswire.onrender.com,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -64,16 +63,29 @@ WSGI_APPLICATION = 'auser.wsgi.application'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Database
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT'),
+#     }
+# }
+
+
+
+# Database
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Update based on your database
-        'NAME': BASE_DIR / 'db.sqlite3',  # This can be changed if you're using another DB
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))
 
 
 # Password validation
@@ -106,11 +118,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory to store media files
 # Set the CSRF trusted origins to include the domain
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
-    'https://bometnewswire.onrender.com',  # Add your Render domain
+    'https://bometnewswire.co.ke',  # Add your domains
+    'https://bometnewswire.onrender.com',
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
