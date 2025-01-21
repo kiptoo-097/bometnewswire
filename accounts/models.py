@@ -54,7 +54,7 @@ class Publisher(models.Model):
 
 class NewsArticle(models.Model):
     CATEGORY_CHOICES = [
-        ('Africa', 'Africa'),
+        ('Politics', 'Politics'),
         ('National', 'National'),
         ('Business', 'Business'),
         ('Sports', 'Sports'),
@@ -71,6 +71,14 @@ class NewsArticle(models.Model):
 
     def __str__(self):
         return self.title
+
+class AdditionalImage(models.Model):
+    article = models.ForeignKey(NewsArticle, related_name='additional_images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='news_images/')
+    caption = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"Image for {self.article.title}"
 
 class Epaper(models.Model):
     title = models.CharField(max_length=200)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Publisher, NewsArticle, Epaper
+from .models import CustomUser, Publisher, NewsArticle, Epaper, AdditionalImage
 from .forms import CustomUserCreationForm
 from .models import Epaper
 
@@ -30,6 +30,10 @@ class PublisherAdmin(admin.ModelAdmin):
 
 admin.site.register(Publisher, PublisherAdmin)
 
+class AdditionalImageInline(admin.TabularInline):
+    model = AdditionalImage
+    extra = 1
+
 class NewsArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'date_published', 'trending', 'published_by')
     list_filter = ('category', 'trending', 'date_published')
@@ -37,6 +41,7 @@ class NewsArticleAdmin(admin.ModelAdmin):
     ordering = ('-date_published',)
     list_editable = ('trending',)
     date_hierarchy = 'date_published'
+    inlines = [AdditionalImageInline]
 
 admin.site.register(NewsArticle, NewsArticleAdmin)
 
@@ -45,11 +50,10 @@ class EpaperAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     ordering = ('-date_posted',)
 
-
 admin.site.register(Epaper)
+admin.site.register(AdditionalImage)
 
 # Customize the admin panel appearance
 admin.site.site_header = 'Bomet Newswire Admin Panel'
 admin.site.site_title = 'Bomet Newswire Admin'
 admin.site.index_title = 'Welcome to Bomet Newswire Administration'
-

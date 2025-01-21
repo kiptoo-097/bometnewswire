@@ -28,6 +28,9 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.navbar.scrolled .navbar-brand { 
+    color: var(--primary-color) !important; }
+
 .navbar.scrolled {
     background-color: white !important;
     color: var(--primary-color) !important;
@@ -150,7 +153,7 @@ body {
     background-color: #007bff; /* Default */
 }
 
-.badge-category.Africa {
+.badge-category.Politics {
     background-color: var(--secondary-color); /* Secondary */
 }
 
@@ -262,4 +265,16 @@ a.text-dark:hover {
 .small-text-list .list-group-item {
     font-size: 0.9rem; /* Reduces font size for list items */
     line-height: 1.4;  /* Improves spacing for smaller text */
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.navbar-brand {
+    font-family: 'Merriweather', serif;
+    font-weight: bold;
+}
+.card-title a:hover {
+    text-decoration: underline;
 }

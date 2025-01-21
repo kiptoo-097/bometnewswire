@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 from .models import NewsArticle, Epaper
 
 def home_view(request):
@@ -22,8 +23,31 @@ def home_view(request):
 
 def news_detail(request, pk):
     article = get_object_or_404(NewsArticle, pk=pk)
-    return render(request, 'accounts/news_detail.html', {'article': article})
+    latest_news = NewsArticle.objects.order_by('-date_published')[:5]
+    trending_news = NewsArticle.objects.filter(trending=True).order_by('-date_published')[:5]
 
+    # Split content into chunks
+    content_chunks = []
+    content = article.content
+    chunk_size = 500  # Adjust the chunk size as needed
+    while content:
+        content_chunks.append(content[:chunk_size])
+        content = content[chunk_size:]
+
+    # Combine content chunks with images
+    combined_chunks = []
+    additional_images = article.additional_images.all()
+    for i, chunk in enumerate(content_chunks):
+        combined_chunks.append({'type': 'text', 'content': chunk})
+        if i < len(additional_images):
+            combined_chunks.append({'type': 'image', 'content': additional_images[i]})
+
+    return render(request, 'accounts/news_detail.html', {
+        'article': article,
+        'latest_news': latest_news,
+        'trending_news': trending_news,
+        'combined_chunks': combined_chunks,
+    })
 
 def category_view(request, category):
     articles = NewsArticle.objects.filter(category=category).order_by('-date_published')
@@ -32,11 +56,6 @@ def category_view(request, category):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'accounts/category.html', {'category': category, 'page_obj': page_obj})
-
-
-def article_detail_view(request, pk):
-    article = get_object_or_404(NewsArticle, pk=pk)
-    return render(request, 'accounts/article_detail.html', {'article': article})
 
 def search_view(request):
     query = request.GET.get('q')
@@ -47,8 +66,6 @@ def search_view(request):
     
     return render(request, 'accounts/search_results.html', {'results': results, 'query': query})
 
-from django.core.paginator import Paginator
-
 def all_news_view(request):
     all_articles = NewsArticle.objects.order_by('-date_published')
     paginator = Paginator(all_articles, 9)
@@ -56,9 +73,6 @@ def all_news_view(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'accounts/all_news.html', {'page_obj': page_obj})
-
-from .models import Epaper
-from django.core.paginator import Paginator
 
 def epaper_list_view(request):
     epapers = Epaper.objects.all().order_by('-date_uploaded')

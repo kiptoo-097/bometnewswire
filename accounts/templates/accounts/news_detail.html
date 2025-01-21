@@ -2,32 +2,99 @@
 
 {% block title %}{{ article.title }}{% endblock %}
 
+{% block og_meta %}
+<meta property="og:title" content="{{ article.title }}">
+<meta property="og:description" content="{{ article.content|truncatechars:100 }}">
+<meta property="og:image" content="{{ article.image.url }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bomet Newswire">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
-    <h1>{{ article.title }}</h1>
-    <img src="{{ article.image.url }}" class="img-fluid mb-3" alt="{{ article.title }}">
-    {% if article.caption %}
-    <p class="text-muted"><small>{{ article.caption }}</small></p>
-    {% endif %}
-    <div class="d-flex align-items-center mb-3">
-        <!-- Avatar -->
-        <img src="{{ article.published_by.avatar.url }}" alt="Avatar" class="rounded-circle mr-3" width="50" height="50">
-        <div>
-            <p class="mb-0">By <strong>{{ article.published_by.name }}</strong></p>
-            <p class="mb-0 text-muted"><small>Published on {{ article.date_published|date:"F j, Y" }}</small></p>
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-9 col-md-12">
+            <h1 class="text-wrap">{{ article.title }}</h1>
+            <p class="card-text" style="font-size: 1.1rem; font-family: 'Times New Roman', serif;"><em>{{ article.content|truncatechars:100 }}</em></p>
+            <img src="{{ article.image.url }}" class="img-fluid mb-3" alt="{{ article.title }}">
+            {% if article.caption %}
+            <p class="text-muted"><small>{{ article.caption }}</small></p>
+            {% endif %}
+            <div class="d-flex align-items-center mb-3">
+                <!-- Avatar -->
+                <img src="{{ article.published_by.avatar.url }}" alt="Avatar" class="rounded-circle mr-3" width="50" height="50">
+                <div>
+                    <p class="mb-0">By <strong>{{ article.published_by.name }}</strong></p>
+                    <p class="mb-0 text-muted"><small>Published on {{ article.date_published|date:"F j, Y" }}</small></p>
+                </div>
+                <div class="ml-auto">
+                    {% if article.published_by.facebook %}
+                    <a href="{{ article.published_by.facebook }}" class="text-dark"><i class="fab fa-facebook-f"></i></a>
+                    {% endif %}
+                    {% if article.published_by.twitter %}
+                    <a href="{{ article.published_by.twitter }}" class="text-dark ml-3"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                    {% if article.published_by.linkedin %}
+                    <a href="{{ article.published_by.linkedin }}" class="text-dark ml-3"><i class="fab fa-linkedin-in"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                {% for chunk in combined_chunks %}
+                    {% if chunk.type == 'text' %}
+                        <p>{{ chunk.content|linebreaksbr }}</p>
+                    {% elif chunk.type == 'image' %}
+                        <div class="additional-image">
+                            <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}">
+                            {% if chunk.content.caption %}
+                            <p class="text-muted"><small>{{ chunk.content.caption }}</small></p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
-        <div class="ml-auto">
-            {% if article.published_by.facebook %}
-            <a href="{{ article.published_by.facebook }}" class="text-dark"><i class="fab fa-facebook-f"></i></a>
-            {% endif %}
-            {% if article.published_by.twitter %}
-            <a href="{{ article.published_by.twitter }}" class="text-dark ml-3"><i class="fab fa-twitter"></i></a>
-            {% endif %}
-            {% if article.published_by.linkedin %}
-            <a href="{{ article.published_by.linkedin }}" class="text-dark ml-3"><i class="fab fa-linkedin-in"></i></a>
-            {% endif %}
-        </div>
+        <!-- Trending and Latest News -->
+        <aside class="col-lg-3 col-md-12">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white">
+                    <ul class="nav nav-tabs card-header-tabs" id="newsTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active text-dark font-weight-bold" id="trending-tab" data-toggle="tab" href="#trending" role="tab" style="font-size: 1rem;">Trending</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark font-weight-bold" id="latest-tab" data-toggle="tab" href="#latest" role="tab" style="font-size: 1rem;">Latest</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content p-3">
+                    <!-- Latest -->
+                    <div class="tab-pane fade" id="latest" role="tabpanel">
+                        <ul class="list-group list-group-flush">
+                            {% for news in latest_news %}
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-primary font-weight-bold" style="font-size: 0.9rem;">{{ news.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- Trending -->
+                    <div class="tab-pane fade show active" id="trending" role="tabpanel">
+                        <ul class="list-group list-group-flush">
+                            {% for news in trending_news %}
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-primary font-weight-bold" style="font-size: 0.9rem;">{{ news.title }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </aside>
     </div>
-    <div>{{ article.content|linebreaksbr }}</div>
 </div>
 {% endblock %}

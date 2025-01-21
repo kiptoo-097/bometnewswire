@@ -11,113 +11,115 @@
             <!-- Live Radio -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body text-center">
-                    <h5 class="card-title font-weight-bold d-flex align-items-center justify-content-center">
-                        <i class="fas fa-broadcast-tower text-danger mr-2"></i> Live Radio
-                    </h5>
+                    <h4 class="card-title font-weight-bold text-danger d-flex align-items-center justify-content-center">
+                        <i class="fas fa-broadcast-tower text-danger mr-2"></i> BN RADIO BOMET
+                    </h4>
                     <div class="audio-player">
                         <audio id="radioPlayer" style="width: 100%; border-radius: 5px;">
                             <source src="https://stream.zeno.fm/ufm2ncifwssuv" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
-                        <div class="audio-controls mt-2 d-flex justify-content-center align-items-center">
+                        <div class="audio-controls mt-3 d-flex justify-content-center align-items-center">
                             <button id="playPauseBtn" class="btn btn-info btn-sm mr-2">
                                 <i class="fas fa-play"></i>
                             </button>
-                            <i class="volume-icon fas fa-volume-up mx-2"></i>
-                            <input
-                                id="volumeBar"
-                                type="range"
-                                min="0"
-                                max="1"
-                                step="0.01"
-                                value="0.5"
-                                class="volume-bar"
-                                style="display: none; width: 80px;" />
+                            <i class="volume-icon fas fa-volume-up mx-2" style="font-size: 1.2rem;"></i>
+                            <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="0.5" class="volume-bar" style="width: 80px;" />
                         </div>
                     </div>
                 </div>
             </div>
-    
+
             <!-- Top News -->
-            <h4 class="mb-3 font-weight-bold">Top News</h4>
+            <h3 class="mb-3 font-weight-bold">Top News</h3>
             {% for news in latest_news|slice:":1" %}
             <div class="card border-0 shadow-sm mb-4">
                 <a href="{% url 'news_detail' news.pk %}">
                     <img src="{{ news.image.url }}" class="card-img-top rounded" alt="{{ news.title }}">
-                    <span class="badge badge-primary position-absolute m-2 p-2">{{ news.category }}</span>
+                    <span class="badge badge-primary position-absolute m-2 p-2" style="font-size: 0.9rem;">{{ news.category }}</span>
                 </a>
                 <div class="card-body">
-                    <h6 class="card-title font-weight-bold">
+                    <h4 class="card-title font-weight-bold text-dark" style="font-size: 1.4rem;">
                         <a href="{% url 'news_detail' news.pk %}" class="text-dark">{{ news.title }}</a>
-                    </h6>
-                    <p class="text-muted small">By {{ news.published_by.name }} on {{ news.date_published }}</p>
+                    </h4>
+                    <p class="text-muted font-italic">By {{ news.published_by.name }} on {{ news.date_published }}</p>
+                    <a href="{% url 'news_detail' news.pk %}">
+                    <p class="card-text" style="font-size: 1rem; font-family: 'Times New Roman', serif;">
+                        {{ news.content|truncatechars:100 }}
+                    </p>
+                    </a>
                 </div>
             </div>
             {% endfor %}
         </aside>
-    
+
         <!-- Main News -->
         <main class="col-md-6">
             {% if main_news %}
             <div class="card border-0 shadow-lg mb-4">
                 <a href="{% url 'news_detail' main_news.pk %}">
                     <img src="{{ main_news.image.url }}" class="card-img-top rounded" alt="{{ main_news.title }}">
-                    <span class="badge badge-danger position-absolute m-2 p-2">{{ main_news.category }}</span>
+                    <span class="badge badge-danger position-absolute m-2 p-2" style="font-size: 0.9rem;">{{ main_news.category }}</span>
                 </a>
                 <div class="card-body">
-                    <h4 class="card-title font-weight-bold">
+                    <h2 class="card-title font-weight-bold text-dark" style="font-size: 1.8rem;">
                         <a href="{% url 'news_detail' main_news.pk %}" class="text-dark">{{ main_news.title }}</a>
-                    </h4>
-                    <p class="text-muted small">By {{ main_news.published_by.name }} on {{ main_news.date_published }}</p>
-                    <p>{{ main_news.content|truncatechars:200 }}</p>
+                    </h2>
+                    <p class="text-muted font-italic">By {{ main_news.published_by.name }} on {{ main_news.date_published }}</p>
+                    <a href="{% url 'news_detail' main_news.pk %}">
+                    <p class="card-text" style="font-size: 1.1rem; font-family: 'Times New Roman', serif;">
+                        {{ main_news.content|truncatechars:200 }}
+                    </p>
+                    </a>
                 </div>
             </div>
             {% endif %}
         </main>
-    
+
         <!-- Trending and Latest News -->
         <aside class="col-md-3">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white">
                     <ul class="nav nav-tabs card-header-tabs" id="newsTabs">
                         <li class="nav-item">
-                            <a class="nav-link active text-dark font-weight-bold" id="trending-tab" data-toggle="tab" href="#trending" role="tab">Trending</a>
+                            <a class="nav-link active text-dark font-weight-bold" id="trending-tab" data-toggle="tab" href="#trending" role="tab" style="font-size: 1rem;">Trending</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark font-weight-bold" id="latest-tab" data-toggle="tab" href="#latest" role="tab">Latest</a>
+                            <a class="nav-link text-dark font-weight-bold" id="latest-tab" data-toggle="tab" href="#latest" role="tab" style="font-size: 1rem;">Latest</a>
                         </li>
                     </ul>
                 </div>
                 <div class="tab-content p-3">
-                    <!-- Trending -->
-                    <div class="tab-pane fade show active" id="trending" role="tabpanel">
-                        <ul class="list-group list-group-flush small-text-list">
-                            {% for news in trending_news %}
-                            <li class="list-group-item">
-                                <a href="{% url 'news_detail' news.pk %}" class="text-primary">{{ news.title }}</a>
+                    <!-- Latest -->
+                    <div class="tab-pane fade" id="latest" role="tabpanel">
+                        <ul class="list-group list-group-flush">
+                            {% for news in latest_news %}
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-primary font-weight-bold" style="font-size: 0.9rem;">{{ news.title }}</a>
                             </li>
                             {% endfor %}
                         </ul>
                     </div>
-                    <!-- Latest -->
-                    <div class="tab-pane fade" id="latest" role="tabpanel">
-                        <ul class="list-group list-group-flush small-text-list">
-                            {% for news in latest_news %}
-                            <li class="list-group-item">
-                                <a href="{% url 'news_detail' news.pk %}" class="text-primary">{{ news.title }}</a>
+                    <!-- Trending -->
+                    <div class="tab-pane fade show active" id="trending" role="tabpanel">
+                        <ul class="list-group list-group-flush">
+                            {% for news in trending_news %}
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="{{ news.image.url }}" alt="{{ news.title }}" class="img-thumbnail mr-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-primary font-weight-bold" style="font-size: 0.9rem;">{{ news.title }}</a>
                             </li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
-            
         </aside>
     </div>
 
     <!-- Additional News Section -->
     <section class="mt-5">
-        <h3 class="text-center font-weight-bold mb-4">More News</h3>
+        <h2 class="text-center font-weight-bold mb-4" style="font-size: 1.8rem;">More News</h2>
         <div class="row">
             {% for news in additional_news %}
             <div class="col-md-4 mb-4">
@@ -126,11 +128,15 @@
                         <img src="{{ news.image.url }}" class="card-img-top rounded" alt="{{ news.title }}">
                     </a>
                     <div class="card-body">
-                        <h6 class="card-title font-weight-bold">
+                        <h4 class="card-title font-weight-bold text-dark" style="font-size: 1.4rem;">
                             <a href="{% url 'news_detail' news.pk %}" class="text-dark">{{ news.title }}</a>
-                        </h6>
-                        <p class="text-muted small">By {{ news.published_by.name }} on {{ news.date_published }}</p>
-                        <p class="card-text">{{ news.content|truncatechars:100 }}</p>
+                        </h4>
+                        <p class="text-muted font-italic">By {{ news.published_by.name }} on {{ news.date_published }}</p>
+                        <a href="{% url 'news_detail' news.pk %}">
+                        <p class="card-text" style="font-size: 1rem; font-family: 'Times New Roman', serif;">
+                            {{ news.content|truncatechars:100 }}
+                        </p>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -140,30 +146,30 @@
             <a href="{% url 'all_news' %}" class="btn btn-primary btn-lg">See All News</a>
         </div>
     </section>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4 font-weight-bold">Latest E-paper</h1>
-        <div class="row">
-            {% for epaper in latest_epapers %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold">{{ epaper.title }}</h5>
-                        <p class="card-text">Uploaded on: {{ epaper.date_uploaded }}</p>
-                        <!-- Redirect to all epaper list when preview clicked -->
-                        <a href="{% url 'epaper_list' %}" class="stretched-link">
-                            <div id="pdf-preview-container-{{ epaper.pk }}" style="width:100%; height:200px; overflow: hidden;">
-                                <canvas class="pdf-preview" data-pdf-url="{{ epaper.pdf.url }}"></canvas>
-                            </div>
-                        </a>
+    
+
+    <!-- E-Paper Section -->
+    <section class="mt-5">
+        <div class="container mt-5">
+            <h1 class="text-center mb-4 font-weight-bold">Latest E-paper</h1>
+            <div class="row">
+                {% for epaper in latest_epapers %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">{{ epaper.title }}</h5>
+                            <p class="card-text">Uploaded on: {{ epaper.date_uploaded }}</p>
+                            <!-- Redirect to all epaper list when preview clicked -->
+                            <a href="{% url 'epaper_list' %}" class="stretched-link">
+                                <div id="pdf-preview-container-{{ epaper.pk }}" style="width:100%; height:200px; overflow: hidden;">
+                                    <canvas class="pdf-preview" data-pdf-url="{{ epaper.pdf.url }}"></canvas>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    
-    <!-- Include pdf.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-
+    </section>
 </div>
 {% endblock %}

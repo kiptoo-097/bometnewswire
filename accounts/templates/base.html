@@ -4,20 +4,21 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bomet Newswire</title>
+        <title>{% block title %}Bomet Newswire{% endblock %}</title>
         
         <!-- Favicon -->
         <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
         
         <!-- Open Graph Meta Tags -->
+        {% block og_meta %}
         <meta property="og:title" content="Bomet Newswire">
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.bometnewswire.co.ke">
         <meta property="og:image" content="https://www.bometnewswire.co.ke/static/images/og_image.png">
         <meta property="og:description" content="Stay updated with the latest news from Bomet.">
-        
         <!-- Additional Open Graph Meta Tags for Render -->
         <meta property="og:image" content="https://bometnewswire.onrender.com/static/images/og_image.png">
+        {% endblock %}
         
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -27,20 +28,53 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         
         <!-- PDF.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script> 
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
         
-        <!-- Custom Scripts -->
-        <script src="{% static 'js/epaper.js' %}"></script>
-        <script src="{% static 'scripts.js' %}"></script>
+        <style>
+            .navbar-brand {
+                font-size: 24px; 
+                font-weight: bold; 
+                letter-spacing: 3px; 
+                padding: 5px 10px; 
+                border-radius: 5px;
+                background-color: #f8f9fa; /* Light background color for visibility */
+            }
+            
+            .navbar-brand span {
+                display: block;
+            }
+            
+            .navbar-brand .bomet {
+                color: black;
+            }
+            
+            .navbar-brand .newswire {
+                color: maroon;
+                font-size: 18px;
+            }
+            
+            @media (max-width: 576px) {
+                .navbar-brand {
+                    font-size: 26px; /* Reduce font size on smaller screens */
+                }
+                
+                .navbar-brand .newswire {
+                    font-size: 13px;
+                }
+            }
+        </style>
     </head>
-    
-    
     
 <body class="flex-column min-vh-100">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg" style="background-color: #0056b3; padding: 10px;">
-    <a class="navbar-brand" href="{% url 'home' %}" style="color: white; font-size: 24px; font-weight: bold; letter-spacing: 1px;">Bomet NewsWire</a>
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <span class="bomet"><strong>BOMET</strong></span>
+        <span class="newswire"><strong>NEWSWIRE</strong></span>
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -63,7 +97,7 @@
             </li>
             <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'all_news' %}">All </a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'category' 'Africa' %}">Africa News</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'category' 'Politics' %}">Politics</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'category' 'National' %}">National</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'category' 'Business' %}">Business</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'category' 'Sports' %}">Sports</a></li>
