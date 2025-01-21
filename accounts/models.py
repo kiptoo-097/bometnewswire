@@ -21,7 +21,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(
         max_length=10,
-        unique=True,
         validators=[
             RegexValidator(
                 regex=r'^(07|01)\d{8}$',

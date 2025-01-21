@@ -1,1 +1,0 @@
-/home/root/accounts/venv/bin/gunicorn --workers 3 --bind unix:/home/root/accounts/auser.sock bometnewswire.wsgi:application

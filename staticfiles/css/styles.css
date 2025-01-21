@@ -3,7 +3,7 @@
 
 /* Color Variables */
 :root {
-    --primary-color: #0056b3;
+    --primary-color: #800000; /* Maroon color */
     --secondary-color: #6c757d;
     --danger-color: #dc3545;
     --warning-color: #ffc107;
@@ -11,16 +11,22 @@
     --info-color: #17a2b8;
     --hover-color: #ffd700;
     --text-dark: #333;
+    --background-light: #f4f4f9; /* Light grey background color */
+    --navbar-gradient-start: #800000; /* Gradient start color */
+    --navbar-gradient-end: #333; /* Gradient end color */
 }
 
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-dark);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
 .navbar {
+    background: linear-gradient(45deg, var(--navbar-gradient-start), var(--navbar-gradient-end)); /* Gradient background color */
     margin-bottom: 0;
     position: sticky; /* Sticky navbar */
     top: 0;
@@ -28,8 +34,26 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.navbar.scrolled .navbar-brand { 
-    color: var(--primary-color) !important; }
+.navbar-brand {
+    font-size: 2.2rem; /* Slightly larger font size */
+    font-weight: 900; /* Bolder font weight */
+    letter-spacing: 3px; 
+    padding: 5px 10px; 
+    border-radius: 5px;
+    background-color: #f8f9fa; /* Light background color for visibility */
+    display: flex;
+    align-items: center;
+    font-family: 'Merriweather', serif; /* Different font for better visibility */
+}
+
+.navbar-brand .bomet {
+    color: black;
+    margin-right: 5px;
+}
+
+.navbar-brand .newswire {
+    color: var(--primary-color);
+}
 
 .navbar.scrolled {
     background-color: white !important;
@@ -37,7 +61,7 @@ body {
 }
 
 .navbar.scrolled .nav-link {
-    color: var(--primary-color) !important;
+    color: white !important;
 }
 
 .navbar.scrolled .nav-link:hover {
@@ -53,7 +77,7 @@ body {
 }
 
 .navbar.scrolled .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%230056b3' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23ffffff' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 .navbar .navbar-toggler {
@@ -73,6 +97,18 @@ body {
 
 .nav-link:hover {
     color: var(--hover-color) !important; /* Gold color on hover */
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.5rem; /* Reduce font size on smaller screens */
+    }
+    .navbar-nav {
+        text-align: center; /* Center nav items on small screens */
+    }
+    .navbar-nav .nav-item {
+        border-bottom: 1px solid #ccc; /* Add border to nav items on small screens */
+    }
 }
 
 /* Search form styling */
@@ -100,7 +136,7 @@ body {
 }
 
 .navbar.scrolled .search-icon {
-    color: var(--primary-color);
+    color: white;
 }
 
 /* Responsive layout for Bootstrap cards */
@@ -233,7 +269,13 @@ body {
 }
 
 footer {
+    background: linear-gradient(45deg, var(--navbar-gradient-start), var(--navbar-gradient-end)); /* Gradient background color */
     margin-top: auto;
+}
+
+footer p {
+    font-weight: bold; /* Bolder font weight */
+    font-family: 'Lato', sans-serif; /* Different font for better visibility */
 }
 
 .card-title {
@@ -255,8 +297,9 @@ a.text-dark {
 }
 
 a.text-dark:hover {
-    color: #0056b3; /* Primary color */
+    color: var(--primary-color); /* Primary color */
 }
+
 /* News Tabs and Lists */
 .card-header-tabs .nav-link {
     font-weight: bold; /* Makes the "Trending" and "Latest" tabs bold */
@@ -271,7 +314,6 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
-.navbar-brand {
-    font-family: 'Merriweather', serif;
-    font-weight: bold;
+.card-title a:hover {
+    text-decoration: underline;
 }

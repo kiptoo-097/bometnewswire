@@ -16,9 +16,9 @@
     <div class="row">
         <!-- Main Content -->
         <div class="col-lg-9 col-md-12">
-            <h1 class="text-wrap">{{ article.title }}</h1>
+            <h1 class="text-wrap" style="font-weight: bold; font-size: 2.5rem; color: #333;">{{ article.title }}</h1>
             <p class="card-text" style="font-size: 1.1rem; font-family: 'Times New Roman', serif;"><em>{{ article.content|truncatechars:200 }}</em></p>
-            <img src="{{ article.image.url }}" class="img-fluid mb-3" alt="{{ article.title }}" style="width: 100%; max-width: 1200px; height: auto; object-fit: cover;">
+            <img src="{{ article.image.url }}" class="img-fluid mb-3" alt="{{ article.title }}" style="width: 100%; max-width: 1200px; height: auto; max-height: 450px; object-fit: cover;">
             {% if article.caption %}
             <p class="text-muted"><small>{{ article.caption }}</small></p>
             {% endif %}
@@ -48,7 +48,7 @@
                         {% if forloop.counter0|divisibleby:4 and forloop.counter0 != 0 %}
                             {% if chunk.content.image %}
                                 <div class="additional-image">
-                                    <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}">
+                                    <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}" style="max-height: 450px;">
                                     {% if chunk.content.caption %}
                                     <p class="text-muted"><small>{{ chunk.content.caption }}</small></p>
                                     {% endif %}
@@ -57,7 +57,7 @@
                         {% endif %}
                     {% elif chunk.type == 'image' %}
                         <div class="additional-image">
-                            <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}">
+                            <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}" style="max-height: 450px;">
                             {% if chunk.content.caption %}
                             <p class="text-muted"><small>{{ chunk.content.caption }}</small></p>
                             {% endif %}
@@ -74,7 +74,7 @@
                 <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title }}" target="_blank" class="btn btn-info">
                     <i class="fab fa-x-twitter"></i> X
                 </a>
-                <a href="https://api.whatsapp.com/send?text={{ article.title }}%20{{ request.build_absolute_uri }}" target="_blank" class="btn btn-success">
+                <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" target="_blank" class="btn btn-success">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </a>
             </div>

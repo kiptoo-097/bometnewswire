@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import dj_database_url
 
 # Load environment variables from .env file
 load_dotenv()
@@ -63,20 +62,6 @@ WSGI_APPLICATION = 'auser.wsgi.application'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('DB_NAME'),
-#         'USER': os.getenv('DB_USER'),
-#         'PASSWORD': os.getenv('DB_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST'),
-#         'PORT': os.getenv('DB_PORT'),
-#     }
-# }
-
-
-
-# Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
@@ -86,12 +71,21 @@ DATABASES = {
     }
 }
 
-
-
 # Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    
-]
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -126,3 +120,23 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'error.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}

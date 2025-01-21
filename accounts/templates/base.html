@@ -34,8 +34,12 @@
     
     <style>
         body {
-            background-color: #f4f4f9; /* Light grey background color */
-            color: #333; /* Dark grey text color for better readability */
+            background-color: var(--background-light); /* Light grey background color */
+            color: var(--text-dark); /* Dark grey text color for better readability */
+        }
+
+        .navbar {
+            background: linear-gradient(45deg, var(--navbar-gradient-start), var(--navbar-gradient-end)); /* Gradient background color */
         }
 
         .navbar-brand {
@@ -56,13 +60,23 @@
         }
         
         .navbar-brand .newswire {
-            color: maroon;
+            color: var(--primary-color);
         }
         
         @media (max-width: 576px) {
             .navbar-brand {
-                font-size: 1.8rem; /* Reduce font size on smaller screens */
+                font-size: 1rem; /* Reduce font size on smaller screens */
             }
+            .navbar-nav {
+                text-align: center; /* Center nav items on small screens */
+            }
+            .navbar-nav .nav-item {
+                border-bottom: 1px solid #ccc; /* Add border to nav items on small screens */
+            }
+        }
+
+        footer {
+            background: linear-gradient(45deg, var(--navbar-gradient-start), var(--navbar-gradient-end)); /* Gradient background color */
         }
 
         footer p {
@@ -74,7 +88,7 @@
 <body class="flex-column min-vh-100">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg" style="background-color: #0056b3; padding: 10px;">
+<nav class="navbar navbar-expand-lg" style="padding: 10px;">
     <a class="navbar-brand" href="{% url 'home' %}">
         <span class="bomet">BOMET</span>
         <span class="newswire">NEWSWIRE</span>
@@ -110,7 +124,7 @@
 </nav>
 
 <!-- Main Content -->
-<div class="container-fluid p-0 flex-grow-1" style="background-color: #f4f4f9;">
+<div class="container-fluid p-0 flex-grow-1" style="background-color: var(--background-light);">
     <div class="container-fluid content">
         {% block content %}
         {% endblock %}
@@ -118,7 +132,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-primary text-white text-center py-3 mt-auto">
+<footer class="text-white text-center py-3 mt-auto">
     <p>&copy; 2024 Bomet Newswire. All rights reserved.</p>
 </footer>
 
@@ -128,5 +142,16 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{% static 'js/scripts.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 50) {
+                $('.navbar').addClass('scrolled');
+            } else {
+                $('.navbar').removeClass('scrolled');
+            }
+        });
+    });
+</script>
 </body>
 </html>
