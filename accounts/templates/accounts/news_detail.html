@@ -17,7 +17,6 @@
         <!-- Main Content -->
         <div class="col-lg-9 col-md-12">
             <h1 class="text-wrap" style="font-weight: bold; font-size: 2.5rem; color: #333;">{{ article.title }}</h1>
-            <p class="card-text" style="font-size: 1.1rem; font-family: 'Times New Roman', serif;"><em>{{ article.content|truncatechars:200 }}</em></p>
             <img src="{{ article.image.url }}" class="img-fluid mb-3" alt="{{ article.title }}" style="width: 100%; max-width: 1200px; height: auto; max-height: 450px; object-fit: cover;">
             {% if article.caption %}
             <p class="text-muted"><small>{{ article.caption }}</small></p>
@@ -42,26 +41,20 @@
                 </div>
             </div>
             <div>
-                {% for chunk in combined_chunks %}
-                    {% if chunk.type == 'text' %}
-                        <p>{{ chunk.content|linebreaksbr }}</p>
-                        {% if forloop.counter0|divisibleby:4 and forloop.counter0 != 0 %}
-                            {% if chunk.content.image %}
+                {% for chunk in article.content.splitlines %}
+                    {% if '{image_placeholder_' in chunk %}
+                        {% for img in article.additional_images.all %}
+                            {% if chunk == '{'|add:img.placeholder|add:'}' %}
                                 <div class="additional-image">
-                                    <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}" style="max-height: 450px;">
-                                    {% if chunk.content.caption %}
-                                    <p class="text-muted"><small>{{ chunk.content.caption }}</small></p>
+                                    <img src="{{ img.image.url }}" class="img-fluid my-3" alt="{{ img.caption }}" style="max-height: 450px;">
+                                    {% if img.caption %}
+                                    <p class="text-muted"><small>{{ img.caption }}</small></p>
                                     {% endif %}
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% elif chunk.type == 'image' %}
-                        <div class="additional-image">
-                            <img src="{{ chunk.content.image.url }}" class="img-fluid my-3" alt="{{ chunk.content.caption }}" style="max-height: 450px;">
-                            {% if chunk.content.caption %}
-                            <p class="text-muted"><small>{{ chunk.content.caption }}</small></p>
-                            {% endif %}
-                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>{{ chunk|linebreaksbr }}</p>
                     {% endif %}
                 {% endfor %}
             </div>

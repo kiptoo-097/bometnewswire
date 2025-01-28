@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Publisher, NewsArticle, Epaper, AdditionalImage
 from .forms import CustomUserCreationForm
-from .models import Epaper
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -46,12 +45,11 @@ class NewsArticleAdmin(admin.ModelAdmin):
 admin.site.register(NewsArticle, NewsArticleAdmin)
 
 class EpaperAdmin(admin.ModelAdmin):
-    list_display = ('title', 'pdf_file', 'date_posted')
+    list_display = ('title', 'pdf', 'date_uploaded')
     search_fields = ('title',)
-    ordering = ('-date_posted',)
+    ordering = ('-date_uploaded',)
 
-admin.site.register(Epaper)
-admin.site.register(AdditionalImage)
+admin.site.register(Epaper, EpaperAdmin)
 
 # Customize the admin panel appearance
 admin.site.site_header = 'Bomet Newswire Admin Panel'

@@ -75,9 +75,11 @@ class AdditionalImage(models.Model):
     article = models.ForeignKey(NewsArticle, related_name='additional_images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='news_images/')
     caption = models.CharField(max_length=255, null=True, blank=True)
+    placeholder = models.CharField(max_length=100, default='placeholder_1')  # Default value added
 
     def __str__(self):
-        return f"Image for {self.article.title}"
+        return f"Image for {self.article.title} at {self.placeholder}"
+
 
 class Epaper(models.Model):
     title = models.CharField(max_length=200)
